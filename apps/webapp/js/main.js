@@ -48,6 +48,16 @@ app.controller("DetailCtrl", function($scope, $routeParams, $http) {
       r = r.replace(new RegExp("http://pokeapi.co", 'g'), "http://localhost:3000")
       r = JSON.parse(r);
       $scope.pkmn = r;
+      $scope.avg = {};
+      $scope.pkmn.types.forEach(function (type) {
+        $http.get('http://localhost:3000/redis/avg/' + type.type.name ).then(
+          function successCallback(response) {
+            $scope.avg[type.type.name] = response.data;
+          }, function errorCallback(response) {
+            console.error(response);
+          });
+      });
+
       console.log($scope.pkmn);
     }, function errorCallback(response) {
       console.error(response);

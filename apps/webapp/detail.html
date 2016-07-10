@@ -1,5 +1,7 @@
 <img ng-src="{{pkmn.sprites.front_default}}"/><h1>{{pkmn.name}}</h1>
-<span ng-repeat="type in pkmn.types">{{type.type.name}} </span>
+<p>
+Types: <span ng-repeat="type in pkmn.types">{{type.type.name}} </span>
+</p>
 <style>
   td {
     padding: 8px;
@@ -7,8 +9,17 @@
 </style>
 <table>
   <tr><td colspan="2"><h2>stats</h2></td></tr>
+  <tr>
+    <td><b>Name</b></td><td><b>Value</b></td>
+    <td ng-repeat="type in pkmn.types"><b>Avg - {{type.type.name}}</b></td>
+  </tr>
   <tr ng-repeat="stat in pkmn.stats">
     <td>{{stat.stat.name}}</td><td>{{stat.base_stat}}</td>
+    <td ng-repeat="type in pkmn.types">
+        {{avg[type.type.name][stat.stat.name] | number:1}} - {{good}}
+        <span ng-show="stat.base_stat > avg[type.type.name][stat.stat.name]">good</span>
+        <span ng-hide="stat.base_stat > avg[type.type.name][stat.stat.name]">bad</span>
+    </td>
   </tr>
 </table>
 <iframe src="https://twitter.com/search?f=tweets&vertical=default&q=%23spinda&src=typd"/>
