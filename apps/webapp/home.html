@@ -1,0 +1,7 @@
+<input style="margin: 10px; padding: 5px" ng-model="search" placeholder="Search a Pokemon... "/>
+<div>
+<a href="/#/detail/{{pkmn._id}}"  
+<div ng-repeat="pkmn in pkmn_list" style="display: inline-block">
+    <img ng-src="{{pkmn._source.picture}}"><br>
+    {{pkmn._source.name}}
+</div>

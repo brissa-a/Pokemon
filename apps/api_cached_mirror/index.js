@@ -9,11 +9,12 @@ client.on("error", function (err) {
 });
 
 //client.set("name", "Alexis", redis.print);
-const redisKeyPrefix = "pokemon:";
-const urlToRedisKey = url => redisKeyPrefix + url;
+const redisKeyPrefix = "pkmn:";
+const urlToRedisKey = url => redisKeyPrefix + url + ":body";
 const urlToRedisKeyContentType = url => redisKeyPrefix + url + ":contenttype";
 
 app.get('*', function (req, res) {
+  console.log("receive: " + req.originalUrl);
   client.get(urlToRedisKey(req.originalUrl), function(err, cached_response) {
     client.get(urlToRedisKeyContentType(req.originalUrl), function(err, cached_contentType) {
       if (!cached_response || !cached_contentType) {
@@ -24,7 +25,6 @@ app.get('*', function (req, res) {
           let callback = function(response) {
             let body_chunk = [];
             let contentType = response.headers['content-type'];
-            console.log(response.headers);
             response.on('data', function (chunk) {
               body_chunk.push(chunk);
             });

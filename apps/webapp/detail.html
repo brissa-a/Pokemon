@@ -1,0 +1,14 @@
+<img ng-src="{{pkmn.sprites.front_default}}"/><h1>{{pkmn.name}}</h1>
+<span ng-repeat="type in pkmn.types">{{type.type.name}} </span>
+<style>
+  td {
+    padding: 8px;
+  }
+</style>
+<table>
+  <tr><td colspan="2"><h2>stats</h2></td></tr>
+  <tr ng-repeat="stat in pkmn.stats">
+    <td>{{stat.stat.name}}</td><td>{{stat.base_stat}}</td>
+  </tr>
+</table>
+<div id="timeline"></div>
