@@ -8,6 +8,15 @@ const argv = require('optimist')
   .default('limit', 150)
   .argv;
 const redis = require("redis").createClient(6379, '127.0.0.1', {'return_buffers': true});
+const reval = require("redis-eval");
+const script  = __dirname + '/compute_avg.lua';
+
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 Array.prototype.flatMap = function(lambda) {
     return Array.prototype.concat.apply([], this.map(lambda));
@@ -59,6 +68,16 @@ for (let id = argv.offset; id < argv.offset+argv.limit; id++) {
       picture: pkmn.sprites.front_default,
       detail_url: 'http://localhost:3000/api/v2/pokemon/'+pkmn.id+'/'
     }
+    //Calculate average
+    pkmn.types.forEach(function (type) {
+      pkmn.stats.forEach(function (stat) {
+        console.log("Compute average for: " + type.type.name + "-" + stat.stat.name)
+        reval(redis, script, [], [stat.base_stat, type.type.name, stat.stat.name], function (ret) {
+          console.log("Compute average for: " + type.type.name + "-" + stat.stat.name + " => Call succeed");
+        });
+      });
+    })
+    //Index for search
     es.index({
       index: 'pokemon',
       type: 'pokemon',

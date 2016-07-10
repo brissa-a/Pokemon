@@ -49,17 +49,6 @@ app.controller("DetailCtrl", function($scope, $routeParams, $http) {
       r = JSON.parse(r);
       $scope.pkmn = r;
       console.log($scope.pkmn);
-      twttr.widgets.createTimeline({
-        sourceType: "url",
-        url: "https://twitter.com/twitterdev/likes"
-      },
-      document.getElementById('timeline'));
-      // twttr.widgets.createTimeline({
-      //   sourceType: "url",
-      //   url: "https://twitter.com/hashtag/" + $scope.pkmn.name
-      // },
-      // document.getElementById('timeline'));
-
     }, function errorCallback(response) {
       console.error(response);
     });
